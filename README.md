@@ -6,11 +6,11 @@ A clothing store mockup page.
 
 ## Objects
 
-**Collection** - a collection of different clothing garments. (Winter collection, Summer collection, etc.)
+**• Collection** - a collection of different clothing garments. (Winter collection, Summer collection, etc.)
 
-**Product** - a certain piece of clothing being sold. (Black T-Shirt, Jeans, Leather jacket, etc.)
+**• Product** - a certain piece of clothing being sold. (Black T-Shirt, Jeans, Leather jacket, etc.)
 
-**Review** - a review of a piece of clothing left by a client.
+**• Review** - a review of a piece of clothing left by a client.
 
 ## Object hierarchy:
 
@@ -24,3 +24,14 @@ A clothing store mockup page.
   ![image](https://github.com/user-attachments/assets/531a67bd-4d6a-4d3a-832e-92e0ce319e3a)
 
   ![image](https://github.com/user-attachments/assets/8c0934e1-8a3e-464a-8fd9-f17031bfae22)
+
+
+## Stack
+
+• **Frontend**: React.js
+
+• **Backend**: Django
+
+• **Authentication**: JWT
+
+• **Databas**e: SQLite
