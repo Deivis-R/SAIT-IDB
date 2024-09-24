@@ -2,7 +2,7 @@
 
 T120B165 Saityno taikomųjų programų projektavimas modulio projektas
 
-An clothing store mockup page.
+A clothing store mockup page.
 
 ## Objects
 
