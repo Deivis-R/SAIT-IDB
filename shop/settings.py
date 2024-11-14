@@ -31,6 +31,7 @@ DATABASES = {
     'default': env.db(),
 }
 
+CSRF_TRUSTED_ORIGINS = ['https://deirasshop-asa8ezhxd3befmg6.northeurope-01.azurewebsites.net']
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
