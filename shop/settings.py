@@ -19,13 +19,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
+import os
+import environ
+env = environ.Env()
+environ.Env.read_env()
+
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env.bool("DEBUG", default=False)
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+DATABASES = {
+    'default': env.db(),
+}
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)=(@%hq&jq-j+bm7&ta1$mcv1k9#*=x#68h@x=nb!#pafmebi9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['deirasshop-asa8ezhxd3befmg6.northeurope-01.azurewebsites.net', '127.0.0.1']
 
 
 # Application definition
@@ -79,14 +88,7 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'deiras-server',
-        'USER': 'smgmupqamc',
-        'PASSWORD': 'mCBxJAvUnA36vRH',
-        'HOST': 'deiras-server.postgres.database.azure.com',
-        'PORT': '5432',
-    }
+    'default': env.db(),
 }
 
 
