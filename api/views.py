@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
 
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
@@ -65,16 +66,19 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 
 class RegisterUser(APIView):
+    authentication_classes = []  # Disable authentication
+    permission_classes = [AllowAny]  # Allow any user to access
+
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
         email = request.data.get("email")
 
         if not username or not password or not email:
-            raise ValidationError("Username, password, and email are required.")
+            return Response({"error": "All fields are required."}, status=400)
 
         if User.objects.filter(username=username).exists():
-            raise ValidationError("Username already exists.")
+            return Response({"error": "Username already exists."}, status=400)
 
         user = User.objects.create_user(username=username, password=password, email=email)
-        return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "User registered successfully!"}, status=201)
