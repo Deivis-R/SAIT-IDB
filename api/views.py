@@ -8,7 +8,7 @@ from .permissions import IsGuestOrReadOnly, IsMemberOrAdmin, IsAdmin
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 
@@ -67,18 +67,27 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class RegisterUser(APIView):
     authentication_classes = []  # Disable authentication
-    permission_classes = [AllowAny]  # Allow any user to access
+    permission_classes = []  # Allow any user to access
 
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
         email = request.data.get("email")
+        group_name = request.data.get("group")  # Accept group name from request
 
-        if not username or not password or not email:
+        if not username or not password or not email or not group_name:
             return Response({"error": "All fields are required."}, status=400)
 
         if User.objects.filter(username=username).exists():
             return Response({"error": "Username already exists."}, status=400)
 
-        user = User.objects.create_user(username=username, password=password, email=email)
-        return Response({"message": "User registered successfully!"}, status=201)
+        try:
+            user = User.objects.create_user(username=username, password=password, email=email)
+            
+            # Add the user to the specified group
+            group = Group.objects.get(name=group_name)
+            user.groups.add(group)
+
+            return Response({"message": f"User registered and added to {group_name} group!"}, status=201)
+        except Group.DoesNotExist:
+            return Response({"error": "Specified group does not exist."}, status=400)
