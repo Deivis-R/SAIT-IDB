@@ -21,6 +21,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from .custom_claims import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
+from .views import RegisterUser
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -46,6 +47,8 @@ urlpatterns = [
     
     # ReDoc UI:
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    path('register/', RegisterUser.as_view(), name='register'),
 ]
 
 from rest_framework_simplejwt.views import (
@@ -57,3 +60,5 @@ urlpatterns += [
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
+

@@ -5,6 +5,12 @@ from .models import Collection, Product, Review
 from .serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
 from .permissions import IsGuestOrReadOnly, IsMemberOrAdmin, IsAdmin
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework.exceptions import ValidationError
+
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
@@ -56,3 +62,19 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if product_id:
             return Review.objects.filter(product_id=product_id)
         return super().get_queryset()
+
+
+class RegisterUser(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        email = request.data.get("email")
+
+        if not username or not password or not email:
+            raise ValidationError("Username, password, and email are required.")
+
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("Username already exists.")
+
+        user = User.objects.create_user(username=username, password=password, email=email)
+        return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)
