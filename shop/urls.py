@@ -48,7 +48,7 @@ urlpatterns = [
     # ReDoc UI:
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('register/', RegisterUser.as_view(), name='register'),
+    path('api/register/', RegisterUser.as_view(), name='register'),
 ]
 
 from rest_framework_simplejwt.views import (
