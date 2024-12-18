@@ -23,6 +23,7 @@ from .custom_claims import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 from api.views import RegisterUser
 from api.views import LogoutView
+from django.views.generic import TemplateView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -41,6 +42,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+
+    # Catch-all for React frontend
+    path('', TemplateView.as_view(template_name='index.html')),
 
     # Swagger UI:
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
