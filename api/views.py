@@ -87,7 +87,7 @@ class RegisterUser(APIView):
             user = User.objects.create_user(username=username, password=password, email=email)
             
             # Add the user to the specified group
-            group = "guest"
+            group = Group.objects.get(name='guest')
             user.groups.add(group)
 
             return Response({"message": f"User registered and added to guest group!"}, status=201)
