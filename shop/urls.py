@@ -22,6 +22,7 @@ from drf_yasg import openapi
 from .custom_claims import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 from api.views import RegisterUser
+from api.views import LogoutView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -49,6 +50,7 @@ urlpatterns = [
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     path('api/register/', RegisterUser.as_view(), name='register'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]
 
 from rest_framework_simplejwt.views import (

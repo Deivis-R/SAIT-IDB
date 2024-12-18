@@ -11,6 +11,8 @@ from rest_framework import status
 from django.contrib.auth.models import User, Group
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class CollectionViewSet(viewsets.ModelViewSet):
     queryset = Collection.objects.all()
@@ -73,9 +75,9 @@ class RegisterUser(APIView):
         username = request.data.get("username")
         password = request.data.get("password")
         email = request.data.get("email")
-        group_name = request.data.get("group")  # Accept group name from request
+        # group_name = request.data.get("group")  # Accept group name from request
 
-        if not username or not password or not email or not group_name:
+        if not username or not password or not email:
             return Response({"error": "All fields are required."}, status=400)
 
         if User.objects.filter(username=username).exists():
@@ -85,9 +87,21 @@ class RegisterUser(APIView):
             user = User.objects.create_user(username=username, password=password, email=email)
             
             # Add the user to the specified group
-            group = Group.objects.get(name=group_name)
+            group = "guest"
             user.groups.add(group)
 
-            return Response({"message": f"User registered and added to {group_name} group!"}, status=201)
+            return Response({"message": f"User registered and added to guest group!"}, status=201)
         except Group.DoesNotExist:
             return Response({"error": "Specified group does not exist."}, status=400)
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data["refresh"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({"message": "Logged out successfully."}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": "Invalid token or logout failed."}, status=status.HTTP_400_BAD_REQUEST)
