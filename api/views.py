@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from .models import Collection, Product, Review
 from .serializers import CollectionSerializer, ProductSerializer, ReviewSerializer
-from .permissions import IsGuestOrReadOnly, IsMemberOrAdmin, IsAdmin
+from .permissions import IsGuestOrReadOnly, IsMemberOrAdmin, IsAdmin, IsReviewAuthorOrReadOnly
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -54,10 +54,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             self.permission_classes = [IsGuestOrReadOnly]
-        elif self.action in ['create', 'update', 'partial_update']:
+        elif self.action in ['create']:
             self.permission_classes = [IsMemberOrAdmin]
-        elif self.action == 'destroy':
-            self.permission_classes = [IsAdmin]
+        elif self.action in ['update', 'partial_update', 'destroy']:
+            # Use custom permission to ensure only the review author can modify or delete their review
+            self.permission_classes = [IsAuthenticated, IsReviewAuthorOrReadOnly]
         return super().get_permissions()
 
     def get_queryset(self):
@@ -65,6 +66,10 @@ class ReviewViewSet(viewsets.ModelViewSet):
         if product_id:
             return Review.objects.filter(product_id=product_id)
         return super().get_queryset()
+    
+    def perform_create(self, serializer):
+        # Automatically assign the logged-in user as the author of the review
+        serializer.save(user=self.request.user)
 
 
 class RegisterUser(APIView):
