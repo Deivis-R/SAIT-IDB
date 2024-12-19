@@ -110,3 +110,19 @@ class LogoutView(APIView):
             return Response({"message": "Logged out successfully."}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": "Invalid token or logout failed."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserRole(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if user.groups.filter(name='admin').exists():
+            role = 'admin'
+        elif user.groups.filter(name='member').exists():
+            role = 'member'
+        elif user.groups.filter(name='guest').exists():
+            role = 'guest'
+        else:
+            role = 'unknown'
+        return Response({'role': role}, status=status.HTTP_200_OK)

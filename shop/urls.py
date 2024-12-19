@@ -24,6 +24,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from api.views import RegisterUser
 from api.views import LogoutView
 from django.views.generic import TemplateView
+from api.views import GetUserRole
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -55,6 +56,7 @@ urlpatterns = [
 
     path('api/register/', RegisterUser.as_view(), name='register'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('api/user-role/', GetUserRole.as_view(), name='get_user_role'),
 ]
 
 from rest_framework_simplejwt.views import (
