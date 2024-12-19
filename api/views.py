@@ -117,8 +117,8 @@ class GetUserRole(APIView):
 
     def get(self, request):
         user = request.user
-        if user.groups.filter(name='admin').exists():
-            role = 'admin'
+        if user.groups.filter(name='administrator').exists():
+            role = 'administrator'
         elif user.groups.filter(name='member').exists():
             role = 'member'
         elif user.groups.filter(name='guest').exists():
