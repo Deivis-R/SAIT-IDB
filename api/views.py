@@ -126,3 +126,10 @@ class GetUserRole(APIView):
         else:
             role = 'unknown'
         return Response({'role': role}, status=status.HTTP_200_OK)
+    
+class GetUserId(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response({'id': user.id}, status=status.HTTP_200_OK)
