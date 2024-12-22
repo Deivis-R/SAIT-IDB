@@ -5,8 +5,11 @@ T120B165 Saityno taikomųjų programų projektavimas modulio projektas
 A clothing store mockup page.
 
 ## Turinys
--[Sprendžiamo uždavinio aprašymas](#sprendžiamo-uždavinio-aprašymas)
--[Sistemos Architektūra](#sistemos-architektūra)
+- [Sprendžiamo uždavinio aprašymas](#sprendžiamo-uždavinio-aprašymas)
+- [Sistemos Architektūra](#sistemos-architektūra)
+- [Naudotojo sąsajos projektas](#naudotojo-sąsajos-projektas)
+- [API Specifikacija](#api-specifikacija)
+- [Išvados](#išvados)
 
 ## Sprendžiamo uždavinio aprašymas
 
@@ -117,7 +120,7 @@ Realization
 
 ---
 
-## API  Specifikacija
+## API Specifikacija
 
 [OpenAPI Documentation](https://deirasshop-asa8ezhxd3befmg6.northeurope-01.azurewebsites.net/swagger/?format=openapi)
 
@@ -593,6 +596,8 @@ Realization
 ```
 ---
 
-## License
+## Išvados
 
-
+- All required API requests have been successfully implemented using the Django framework
+- User Interface has been successfully implemented using React and connected to the backend functions.
+- The projects was successfully deployed to a Azure WebApp and connected to a PostgreSQL database on an Azure server.
