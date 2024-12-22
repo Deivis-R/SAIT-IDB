@@ -51,6 +51,9 @@ By role:
 
 ## Sistemos Architektūra
 
+![image](https://github.com/user-attachments/assets/e34cab84-ebad-4ba3-86b0-becfeb0bed0e)
+
+
 ## Naudotojo sąsajos projektas
 
 ### Login
